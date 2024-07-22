@@ -28,3 +28,8 @@ module.exports=router;
 //getbyid
 //update
 //delete
+
+//npm init -y
+//npm i express
+//npm install nodemon
+//add dev script
