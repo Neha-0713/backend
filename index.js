@@ -1,6 +1,7 @@
 //importing express
 const express = require('express');
 const UserRouter=require('./routers/UserRouter');
+const ProductRouter=require('./routers/ProductRouter');
 
 //initialize express
 const app = express();
@@ -8,7 +9,9 @@ const app = express();
 const port = 5000;
 
 //middleware
+app.use(express.json());
 app.use('/user', UserRouter);
+app.use('/products', ProductRouter);
 
 //end point or route(to let the server accept the request)
 app.get('/',(req, res)=>{
