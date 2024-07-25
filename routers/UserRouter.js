@@ -28,17 +28,66 @@ router.get('/getall', (req, res)=>{
     });
 })
 
-router.get('/getbyid', (req, res)=>{
-    res.send('response from user id');
+//colon denotes url parameter
+router.get('/getbycity/:city' , (req, res)=>{
+    console.log(req.params.city);
+
+    Model.find({city:req.params.city})
+    .then((result) => {
+        res.status(200).json(result); 
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+
 })
 
-router.get('/update', (req, res)=>{
-    res.send('response from update all');
+router.get('/getbyemail/:email',(req, res)=>{
+    Model.findOne({email:req.params.email})
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
 })
 
-router.get('/delete', (req, res)=>{
-    res.send('response from delete');
+
+
+router.get('/getbyid/:id', (req, res)=>{
+    Model.findById(req.params.id)
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
 })
+
+
+
+
+
+router.delete('/delete/:id', (req, res)=>{
+    Model.findByIdAndDelete(req.params.id)
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+})
+
+router.put('/update/:id',(req,res)=>{
+    Model.findByIdAndUpdate(req.params.id,req.body,{new:true})
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+})
+
 
 module.exports=router;
 
