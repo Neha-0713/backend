@@ -1,7 +1,9 @@
 const express = require('express');
 
 const router=express.Router();
-const Model = require('../models/UserModel')
+const Model = require('../models/UserModel');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 router.post('/add', (req, res)=>{
@@ -86,6 +88,40 @@ router.put('/update/:id',(req,res)=>{
         console.log(err);
         res.status(500).json(err);
     });
+})
+
+router.post('/authenticate', (req,res)=>{
+    Model.findOne(req.body)
+    .then((result) => {
+        if(result){
+            //payload, secretkry, expiry- requirements for token generation
+            const {_id, email, password} = result;
+            const payload = {_id, email, password};
+
+            jwt.sign(
+                payload,
+                process.env.SECRET_KEY,
+                {expiresIn: '1hr'},
+                (err, token)=>{
+                    if(err){
+                        console.log(err);
+                        res.status(500).json(err);
+                    }else{
+                        res.status(200).json({token: token});
+                    }
+                    
+                }
+            )
+
+
+        }else{
+            res.status(401).json({message:'Invalid Credentials'})
+        }
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+
 })
 
 
