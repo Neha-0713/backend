@@ -5,7 +5,6 @@ const Model = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
 router.post('/add', (req, res)=>{
     console.log(req.body);
     new Model(req.body).save()
@@ -17,7 +16,6 @@ router.post('/add', (req, res)=>{
         res.status(500).json(err);//500 is server side error response status code
     });
 
-    
 });
 
 router.get('/getall', (req, res)=>{
@@ -54,8 +52,6 @@ router.get('/getbyemail/:email',(req, res)=>{
     });
 })
 
-
-
 router.get('/getbyid/:id', (req, res)=>{
     Model.findById(req.params.id)
     .then((result) => {
@@ -65,10 +61,6 @@ router.get('/getbyid/:id', (req, res)=>{
         res.status(500).json(err);
     });
 })
-
-
-
-
 
 router.delete('/delete/:id', (req, res)=>{
     Model.findByIdAndDelete(req.params.id)
@@ -100,7 +92,7 @@ router.post('/authenticate', (req,res)=>{
 
             jwt.sign(
                 payload,
-                process.env.SECRET_KEY,
+                process.env.JWT_SECRET,
                 {expiresIn: '1hr'},
                 (err, token)=>{
                     if(err){
